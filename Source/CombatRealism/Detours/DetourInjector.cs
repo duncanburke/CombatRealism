@@ -150,6 +150,29 @@ namespace Combat_Realism.Detours
                 typeof(Detours_ThinkNode_JobGiver).GetMethod("TryIssueJobPackage", BindingFlags.Instance | BindingFlags.Public)))
                 return false;
 
+			MemberInfo[] jobTrackerMembers = typeof(Pawn_JobTracker).GetMethods(BindingFlags.Instance | BindingFlags.Public);
+			foreach (var member in jobTrackerMembers)
+			{
+				Log.Message(String.Format("Pawn_JobTracker: {0} {1}", member.Name, member.GetType()));
+			}
+
+			// MethodInfo foo = typeof(Pawn_JobTracker).GetMethod("TryFindAndStartJob", BindingFlags.Instance | BindingFlags.NonPublic);
+			// Log.Message(String.Format("{0}",foo));
+
+			// MethodInfo TryFindAndStartJobSource = typeof(Pawn_JobTracker).GetMethod("TryFindAndStartJob", BindingFlags.Instance | BindingFlags.NonPublic);
+			// MethodInfo TryFindAndStartJobDest = typeof(Detours_Pawn_JobTracker).GetMethod("TryFindAndStartJob", BindingFlags.Static | BindingFlags.NonPublic);
+
+			// Log.Message(String.Format("Detour TryFindAndStart Job {0} {1}", TryFindAndStartJobSource, TryFindAndStartJobDest));
+			// if (!Detours.TryDetourFromTo(TryFindAndStartJobSource, TryFindAndStartJobDest))
+			//     return false;
+
+			// Detours_Pawn_JobTracker._Pawn_JobTracker = typeof(Pawn_JobTracker).GetConstructor(new[] { typeof(Pawn) });
+			Detours_Pawn_JobTracker._JobTrackerTick = typeof(Pawn_JobTracker).GetMethod("JobTrackerTick", BindingFlags.Instance | BindingFlags.Public);
+
+			if (!Detours.TryDetourFromTo(Detours_Pawn_JobTracker._JobTrackerTick,
+			                             typeof(Detours_Pawn_JobTracker).GetMethod("JobTrackerTick", BindingFlags.Static | BindingFlags.NonPublic)))
+                 return false;
+
             return true;
         }
     }

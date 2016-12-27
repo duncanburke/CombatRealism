@@ -179,6 +179,7 @@
     <Compile Include="Combat_Realism\Jobs\ExternalPawnDrafter.cs" />
     <Compile Include="Combat_Realism\Jobs\JobDriver_Reload.cs" />
     <Compile Include="Combat_Realism\SecondaryDamage.cs" />
+    <Compile Include="Detours\Detours_Pawn_JobTracker.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="_DLLs\" />
