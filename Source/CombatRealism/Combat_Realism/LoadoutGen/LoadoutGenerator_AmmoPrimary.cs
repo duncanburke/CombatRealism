@@ -23,9 +23,11 @@ namespace Combat_Realism
                 Log.Error("Tried generating ammo loadout defs with null pawn");
                 return;
             }
+            Log.Message(String.Format("AmmoPrimary: Pawn {0}", pawn));
             if (pawn.equipment != null && pawn.equipment.Primary != null)
             {
                 ThingWithComps eq = pawn.equipment.Primary;
+                Log.Message(String.Format("AmmoPrimary: Pawn equipment {0}", eq));
                 availableDefs = new List<ThingDef>();
                 AddAvailableAmmoFor(eq);
             }
@@ -38,15 +40,18 @@ namespace Combat_Realism
                 return;
             }
             CompAmmoUser compAmmo = eq.TryGetComp<CompAmmoUser>();
+            Log.Message(String.Format("AmmoPrimary: compAmmo {0}", compAmmo));
             if (compAmmo != null && !compAmmo.Props.ammoSet.ammoTypes.NullOrEmpty())
             {
 
                 List<ThingDef> listammo = (from ThingDef g in compAmmo.Props.ammoSet.ammoTypes
                                            where g.canBeSpawningInventory
                                            select g).ToList<ThingDef>();
+                Log.Message(String.Format("AmmoPrimary: listammo {0}", String.Join(", ", (from x in listammo select x.ToString()).ToArray())));
                 if (!listammo.NullOrEmpty())
                 {
                     ThingDef randomammo = GenCollection.RandomElement<ThingDef>(listammo);
+                    Log.Message(String.Format("AmmoPrimary: randomammo {0} ({1})", randomammo, randomammo.canBeSpawningInventory));
                     availableDefs.Add(randomammo);
                 }
                 else return;

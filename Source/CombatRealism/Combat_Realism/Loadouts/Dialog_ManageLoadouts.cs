@@ -54,6 +54,7 @@ namespace Combat_Realism
         private SourceSelection _sourceType = SourceSelection.Ranged;
         private float _topAreaHeight = 30f;
 
+        private float _profile_time = 0f;
         #endregion Fields
 
         #region Constructors
@@ -113,8 +114,21 @@ namespace Combat_Realism
 
         #region Methods
 
+        private void StartProfile()
+        {
+            _profile_time = Time.realtimeSinceStartup;
+        }
+
+        private void ProfilePoint(string text)
+        {
+            float now = Time.realtimeSinceStartup;
+            Log.Message(String.Format("{0}: {1}", text, now - _profile_time));
+            _profile_time = now;
+        }
+
         public override void DoWindowContents(Rect canvas)
         {
+            // StartProfile();
             // fix weird zooming bug
             Text.Font = GameFont.Small;
 
@@ -154,6 +168,7 @@ namespace Combat_Realism
 
             List<Loadout> loadouts = LoadoutManager.Loadouts;
 
+            // ProfilePoint("ManageLoadouts.DoWindowContents SET UP RECTS");
             // DRAW CONTENTS
             // buttons
             // select loadout
@@ -218,18 +233,23 @@ namespace Combat_Realism
                 // and stop further drawing
                 return;
             }
+            // ProfilePoint("ManageLoadouts.DoWindowContents DRAW CONTENTS");
 
             // name
             DrawNameField(nameRect);
+            // ProfilePoint("ManageLoadouts.DoWindowContents DrawNameField");
 
             // source selection
             DrawSourceSelection(sourceButtonRect);
+            // ProfilePoint("ManageLoadouts.DoWindowContents DrawSounceSelection");
 
             // selection area
             DrawSlotSelection(selectionRect);
+            // ProfilePoint("ManageLoadouts.DoWindowContents DrawSlotSelection");
 
             // current slots
             DrawSlotList(slotListRect);
+            // ProfilePoint("ManageLoadouts.DoWindowContents DrawSlotList");
 
             // bars
             if (CurrentLoadout != null)
@@ -237,6 +257,7 @@ namespace Combat_Realism
                 Utility_Loadouts.DrawBar(weightBarRect, CurrentLoadout.Weight, CR_StatDefOf.CarryWeight.defaultBaseValue, "CR.Weight".Translate(), CurrentLoadout.GetWeightTip());
                 Utility_Loadouts.DrawBar(bulkBarRect, CurrentLoadout.Bulk, CR_StatDefOf.CarryBulk.defaultBaseValue, "CR.Bulk".Translate(), CurrentLoadout.GetBulkTip());
             }
+            // ProfilePoint("ManageLoadouts.DoWindowContents DrawBars");
 
             // done!
         }
@@ -541,11 +562,14 @@ namespace Combat_Realism
             viewRect.width -= 16f;
             viewRect.height = _source.Count * _rowHeight;
 
+            // Log.Message(String.Format("DrawSlotSelection _source.Count {0}", _source.Count));
+            // Log.Message(String.Format("DrawSlotSelection {0} {1}", _availableScrollPosition, viewRect.ToString()));
             Widgets.BeginScrollView(canvas, ref _availableScrollPosition, viewRect.AtZero());
             int startRow = (int)Math.Floor((decimal)(_availableScrollPosition.y / _rowHeight));
             startRow = (startRow < 0) ? 0 : startRow;
             int endRow = startRow + (int)(Math.Ceiling((decimal)(canvas.height / _rowHeight)));
             endRow = (endRow > _source.Count) ? _source.Count : endRow;
+            // Log.Message(String.Format("DrawSlotSelection {0} {1} {2} {3}", viewRect.ToString(), _availableScrollPosition, startRow, endRow))
             for (int i = startRow; i < endRow; i++)
             {
                 // gray out weapons not in stock
