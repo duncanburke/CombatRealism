@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ThingCategoryDefs>
 
     <ThingCategoryDef>
@@ -8,9 +8,18 @@
     </ThingCategoryDef>
 
     <ThingCategoryDef>
+      <defName>Weapons</defName>
+      <label>weapons</label>
+      <parent>Root</parent>
+      <iconPath>UI/Icons/ThingCategories/Foods</iconPath>
+    </ThingCategoryDef>
+
+    <ThingCategoryDef>
       <defName>Ammo</defName>
       <label>ammunition</label>
       <parent>Weapons</parent>
+      <iconPath>UI/Icons/ThingCategories/Foods</iconPath>
+      <!-- <iconPath>Textures/Thinngs/Ammo/Rifle/FMJ/FMJ_c</iconPath> -->
     </ThingCategoryDef>
   
     <ThingCategoryDef>
